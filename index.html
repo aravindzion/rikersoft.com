@@ -516,7 +516,7 @@
           </div>
         </div>
         <div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
-          <form id="contact" action="https://formspree.io/f/moveqgnp" method="POST" onsubmit="return handleFormSubmit(event)">
+          <form id="contact" action="https://formspree.io/f/moveqgnp" method="POST">
             <div class="row">
               <div class="col-lg-12">
                 <div class="contact-dec">
@@ -605,26 +605,30 @@
   <script src="assets/js/imagesloaded.js"></script>
   <script src="assets/js/custom.js"></script>
   <script>
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    var form = document.getElementById("contact-form");
+  document.getElementById("contact-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    let form = this; // Reference to the form
+
+    // Send form data to Formspree
     fetch(form.action, {
-      method: form.method,
+      method: "POST",
       body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    }).then(response => {
+      headers: { "Accept": "application/json" }
+    })
+    .then(response => {
       if (response.ok) {
         alert("Thank you! Your message has been sent.");
-        form.reset();
+        form.reset(); // Clear the form fields
       } else {
-        alert("Oops! There was a problem sending your message.");
+        alert("Oops! Something went wrong, please try again.");
       }
-    }).catch(error => {
-      alert("Oops! Something went wrong. Please try again.");
+    })
+    .catch(error => {
+      alert("Error: Could not send message. Please check your internet connection.");
     });
-    return false;
-  }
-  </script>
+  });
+</script>
 
 </body>
 </html>
